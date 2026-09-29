@@ -154,7 +154,7 @@ function project(slug){
   if(!p)return `<div class="wrap empty-page"><h1>Project not found.</h1><a href="#/work">Return to all work</a></div>`;
   const i=projects.indexOf(p),prev=projects[(i+projects.length-1)%projects.length],next=projects[(i+1)%projects.length];
   const preview=p.previewType==='iframe'
-    ? `<button class="dark-button" id="launch-preview">Launch interactive preview ${arrow}</button>`
+    ? `<div class="preview-buttons"><button class="dark-button" id="launch-preview">Launch interactive preview ${arrow}</button><a class="text-link" href="${p.liveUrl}" target="_blank" rel="noopener noreferrer">Open live site ${arrow}</a></div>`
     : `<a class="dark-button" href="${p.liveUrl}" target="_blank" rel="noopener noreferrer">Open live site ${arrow}</a>`;
   return `<div class="wrap project-page">
     <a class="back-link" href="#/work">← All work</a>
