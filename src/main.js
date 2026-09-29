@@ -80,7 +80,7 @@ function contactSection(){
 
 function home(){
   const [sillage,aurel,varel]=projects.filter(p=>p.featured);
-  return `<div class="shell home"><section class="hero reveal"><div class="hero-kicker">Independent digital studio / 2026</div><div class="hero-main"><h1>Websites<br><em>with character.</em></h1><div><p>PRESCORN designs and develops distinctive digital experiences for brands, products and ideas.</p><a href="#featured">Selected work ↓</a></div></div><div class="hero-foot"><span>Design</span><span>Development</span><span>Digital experiences</span></div></section>
+  return `<div class="shell home"><section class="hero reveal"><div class="hero-kicker">Independent digital studio / 2026</div><div class="hero-main"><h1>Websites<br><em>with character.</em></h1><div><p>PRESCORN designs and develops distinctive digital experiences for brands, products and ideas.</p><a href="#/work">Selected work ↓</a></div></div><div class="hero-foot"><span>Design</span><span>Development</span><span>Digital experiences</span></div></section>
   <section id="featured" class="featured"><div class="section-head"><span>01 / Selected work</span><p>Three recent projects. Preview the work here, then open the full experience.</p><a href="#/work">All work ${arrow}</a></div><div class="featured-layout">${projectCard(sillage,true,true)}<div class="featured-pair">${projectCard(aurel,false,false)}${projectCard(varel,false,false)}</div></div></section>
   ${studioSection()}${pricingSection()}</div><div class="contact-band"><div class="shell">${contactSection()}</div></div>`;
 }
