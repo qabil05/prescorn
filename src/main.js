@@ -29,7 +29,7 @@ function header(){
 function footer(){
   $('#footer').innerHTML=`<div class="footer-shell">
     <div><a class="brand" href="#/">PRESCORN</a><p>Digital design & creative development.</p></div>
-    <div class="footer-links"><a href="#/work">Work</a><a href="#/studio">Studio</a><a href="#/pricing">Pricing</a><a href="#/contact">Start a project</a></div>
+    <div class="footer-links"><a href="#/work">Work</a><a href="#/responsive">Responsive</a><a href="#/pricing">Pricing</a><a href="#/contact">Start a project</a></div>
     <div class="footer-meta"><span>© ${new Date().getFullYear()} PRESCORN</span><a href="#/">Back to top ↑</a></div>
   </div>`;
 }
