@@ -11,7 +11,7 @@ function header(){
     <a class="brand" href="#/" aria-label="PRESCORN home">PRESCORN</a>
     <button class="menu-button" aria-expanded="false" aria-controls="site-nav"><span>Menu</span><i aria-hidden="true"></i></button>
     <nav id="site-nav" aria-label="Primary navigation">
-      <a href="#/work">Work</a><a href="#/studio">Studio</a><a href="#/pricing">Pricing</a><a class="header-cta" href="#/contact">Start a project ${arrow}</a>
+      <a href="#/work">Work</a><a href="#/responsive">Responsive</a><a href="#/pricing">Pricing</a><a class="header-cta" href="#/contact">Start a project ${arrow}</a>
     </nav>
   </div>`;
   const button=$('.menu-button');
@@ -79,10 +79,80 @@ function contactSection(){
 }
 
 function home(){
-  const [sillage,aurel,varel]=projects.filter(p=>p.featured);
-  return `<div class="shell home"><section class="hero reveal"><div class="hero-kicker">Independent digital studio / 2026</div><div class="hero-main"><h1>Websites<br><em>with character.</em></h1><div><p>PRESCORN designs and develops distinctive digital experiences for brands, products and ideas.</p><a href="#/work">Selected work ↓</a></div></div><div class="hero-foot"><span>Design</span><span>Development</span><span>Digital experiences</span></div></section>
-  <section id="featured" class="featured"><div class="section-head"><span>01 / Selected work</span><p>Three recent projects. Preview the work here, then open the full experience.</p><a href="#/work">All work ${arrow}</a></div><div class="featured-layout">${projectCard(sillage,true,true)}<div class="featured-pair">${projectCard(aurel,false,false)}${projectCard(varel,false,false)}</div></div></section>
-  ${studioSection()}${pricingSection()}</div><div class="contact-band"><div class="shell">${contactSection()}</div></div>`;
+  const featured=projects.filter(p=>p.featured).slice(0,3);
+  const sillage=featured[0],aurel=featured[1],varel=featured[2];
+
+  const heroSlides=featured.map((p,i)=>`
+    <button class="hero-project-tab ${i===0?'active':''}" data-slide="${i}" aria-label="Show ${escapeHTML(p.name)}">
+      <span>0${i+1}</span><strong>${escapeHTML(p.name)}</strong><small>${escapeHTML(p.category.split('/')[0].trim())}</small>
+    </button>`).join('');
+
+  const siteTiles=projects.map((p,i)=>`
+    <article class="site-tile">
+      <a class="site-tile-media" href="#/project/${p.slug}" style="--project:${p.color}">${visual(p,i<2)}</a>
+      <div class="site-tile-copy">
+        <div><span>${p.number}</span><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.category)}</p></div>
+        <div><a href="#/project/${p.slug}">View project →</a><a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer">Live site ↗</a></div>
+      </div>
+    </article>`).join('');
+
+  return `<div class="home">
+    <section class="live-hero" aria-label="Latest projects">
+      <div class="live-hero-stage">
+        <iframe id="hero-site-frame" title="${escapeHTML(featured[0].name)} live website preview" src="${featured[0].liveUrl}" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <div class="live-hero-shade"></div>
+        <div class="live-hero-top">
+          <div><span>Latest work</span><strong id="hero-project-name">${escapeHTML(featured[0].name)}</strong></div>
+          <a id="hero-live-link" href="${featured[0].liveUrl}" target="_blank" rel="noopener noreferrer">Open live site ↗</a>
+        </div>
+        <div class="live-hero-bottom">
+          <div class="hero-counter"><span id="hero-current">01</span><i></i><span>03</span></div>
+          <div class="hero-arrows">
+            <button id="hero-prev" aria-label="Previous project">←</button>
+            <button id="hero-next" aria-label="Next project">→</button>
+          </div>
+        </div>
+      </div>
+      <div class="live-hero-tabs">${heroSlides}</div>
+    </section>
+
+    <div class="shell">
+      <section class="site-links-section reveal">
+        <div class="section-head simple-head">
+          <span>01 / Our work</span>
+          <div><h2>Explore the websites.</h2><p>Open each project inside PRESCORN or jump directly to the live experience.</p></div>
+          <a href="#/work">View all projects ↗</a>
+        </div>
+        <div class="site-links-grid">${siteTiles}</div>
+      </section>
+
+      <section id="responsive" class="responsive-section reveal">
+        <div class="responsive-copy">
+          <div class="section-index">02 / Responsive by design</div>
+          <h2>Designed for<br><em>every screen.</em></h2>
+          <p>Phone, desktop and tablet are not afterthoughts. Every project is shaped and tested across the screens people actually use.</p>
+          <div class="responsive-notes"><span>Mobile first thinking</span><span>Desktop precision</span><span>Tablet ready</span></div>
+        </div>
+        <div class="device-stage" aria-label="Responsive website previews">
+          <div class="device device-phone">
+            <div class="device-bar"><span></span></div>
+            <iframe title="SILLAGE mobile preview" src="${sillage.liveUrl}" loading="lazy" tabindex="-1"></iframe>
+          </div>
+          <div class="device device-desktop">
+            <div class="desktop-top"><i></i><i></i><i></i></div>
+            <iframe title="VAREL desktop preview" src="${varel.liveUrl}" loading="lazy" tabindex="-1"></iframe>
+          </div>
+          <div class="device device-tablet">
+            <iframe title="AUREL tablet preview" src="${aurel.liveUrl}" loading="lazy" tabindex="-1"></iframe>
+          </div>
+        </div>
+      </section>
+
+      ${pricingSection()}
+    </div>
+
+    <div class="contact-band"><div class="shell">${contactSection()}</div></div>
+  </div>`;
 }
 
 function work(){
@@ -97,6 +167,36 @@ function project(slug){
   <section class="project-about reveal"><div class="section-index">About</div><div><h2>${escapeHTML(p.short)}</h2><p>${escapeHTML(p.description)}</p>${p.concept?'<p class="note">Independent concept work. It does not represent a real company or products offered for sale.</p>':''}</div><dl><dt>Category</dt><dd>${escapeHTML(p.category)}</dd><dt>Role</dt><dd>${escapeHTML(p.role)}</dd><dt>Year</dt><dd>${p.year}</dd></dl></section>
   <section class="live-preview reveal"><div><div class="section-index">Interactive view</div><h2>Experience the website.</h2><p>The real site only loads when you ask for it, keeping PRESCORN fast.</p></div><div class="preview-actions">${p.previewType==='iframe'?`<button id="launch-preview" class="dark-button">Launch interactive preview ${arrow}</button>`:''}<a href="${p.liveUrl}" target="_blank" rel="noopener noreferrer">Open live site ${arrow}</a></div><div id="preview-frame"></div></section>
   <a class="next-project" href="#/project/${next.slug}"><div><span>Next project</span><strong>${next.name}</strong></div>${arrow}</a></div>`;
+}
+
+function bindHeroSlider(){
+  const frame=$('#hero-site-frame');
+  if(!frame)return;
+  const featured=projects.filter(p=>p.featured).slice(0,3);
+  let current=0;
+  const name=$('#hero-project-name');
+  const counter=$('#hero-current');
+  const live=$('#hero-live-link');
+  const tabs=$('.hero-project-tab');
+
+  const show=(index)=>{
+    current=(index+featured.length)%featured.length;
+    const p=featured[current];
+    frame.classList.add('switching');
+    window.setTimeout(()=>{
+      frame.src=p.liveUrl;
+      frame.title=`${p.name} live website preview`;
+      name.textContent=p.name;
+      counter.textContent=String(current+1).padStart(2,'0');
+      live.href=p.liveUrl;
+      tabs.forEach((tab,i)=>tab.classList.toggle('active',i===current));
+      window.setTimeout(()=>frame.classList.remove('switching'),220);
+    },160);
+  };
+
+  $('#hero-prev')?.addEventListener('click',()=>show(current-1));
+  $('#hero-next')?.addEventListener('click',()=>show(current+1));
+  tabs.forEach((tab,i)=>tab.addEventListener('click',()=>show(i)));
 }
 
 function bindForm(){
@@ -121,9 +221,9 @@ function bindPreview(){
 
 function render(){
   const route=(location.hash.slice(1)||'/').split('?')[0];
-  const section=['/studio','/pricing','/contact'].includes(route)?route.slice(1):null;
+  const section=['/responsive','/pricing','/contact'].includes(route)?route.slice(1):null;
   $('#main').innerHTML=route==='/work'?work():route.startsWith('/project/')?project(route.split('/')[2]):home();
-  bindForm();bindReveal();bindPreview();
+  bindHeroSlider();bindForm();bindReveal();bindPreview();
   requestAnimationFrame(()=>{if(section)document.getElementById(section)?.scrollIntoView({behavior:'instant'});else{scrollTo(0,0);$('#main').focus({preventScroll:true});}});
 }
 
